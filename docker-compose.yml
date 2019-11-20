@@ -1,0 +1,10 @@
+version: '2.1'
+
+services:
+  loc:
+    image: c-loc
+    build: .
+    environment:
+      NODE_ENV: production
+    ports:
+      - 9001:9001
