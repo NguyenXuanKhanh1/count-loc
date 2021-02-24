@@ -6,7 +6,7 @@ const host = `${window.location.href}analyzer`;
 let errorMessage = null;
 let loading = null;
 
-const getAnalysis = async repoInfo => {
+const getAnalysis = async (repoInfo) => {
   const repo = repoInfo.repo.split('://');
   const url = host + `?repo=${repo[0]}://docker:${repoInfo.token}@${repo[1]}`;
   loading = true;
@@ -26,14 +26,14 @@ const getAnalysis = async repoInfo => {
 
 const GitRepositoryForm = ({ setData }) => {
   const [repo, setRepo] = useState('');
-  const gitAccessToken = '';
+  const [token, setToken] = useState('');
   const onSubmit = () =>
     getAnalysis({
       repo: repo,
-      token: gitAccessToken,
-      setData: setData
+      token: token,
+      setData: setData,
     });
-  const onChange = event => setRepo(event.target.value);
+  const onChange = (event) => setRepo(event.target.value);
   return (
     <Form onSubmit={onSubmit} loading={loading}>
       <Form.Field>
@@ -48,11 +48,10 @@ const GitRepositoryForm = ({ setData }) => {
         <label>Access token: </label>
         <input
           name='token'
-          value={gitAccessToken}
-          onChange={onChange}
+          value={token}
+          onChange={(event) => setToken(event.target.value)}
           type='text'
           placeholder='git access token here ...'
-          disabled
         />
       </Form.Field>
       <Button primary type='submit'>

@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use(cors());
 
-app.get('/analyzer', async function(req, res) {
+app.get('/analyzer', async function (req, res) {
   if (!req.query.repo) {
     exec('ls report', (err, stdout, stderr) => {
       if (err) {
@@ -47,12 +47,14 @@ app.get('/analyzer', async function(req, res) {
       console.error(err);
     } else {
       console.log(stdout);
-      const fileName = stdout.split(/\r?\n/).find(ele => ele.includes('.csv'));
+      const fileName = stdout
+        .split(/\r?\n/)
+        .find((ele) => ele.includes('.csv'));
       const ala = {};
       let author = '';
       fs.createReadStream(`report/${fileName}`)
         .pipe(csv())
-        .on('data', async row => {
+        .on('data', async (row) => {
           if (Object.keys(row).length !== 1) {
             ala[author].push(row);
           } else {
@@ -74,11 +76,11 @@ app.get('/analyzer', async function(req, res) {
   });
 });
 
-app.get('/get-files', async function(req, res) {
+app.get('/get-files', async function (req, res) {
   res.sendFile(`report/${req.query.name}`, { root: __dirname });
 });
 
-const server = app.listen(port, err => {
+const server = app.listen(port, (err) => {
   if (err) {
     return console.log('something bad happened', err);
   }
